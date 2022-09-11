@@ -21,6 +21,8 @@ setuptools.setup(
     name="codecarbon",
     version="2.1.4",
     author="Mila, DataForGood, BCG GAMMA, Comet.ml, Haverford College",
+    license="https://choosealicense.com/licenses/mit/",
+    license_files=("LICENSE",),
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(
