@@ -276,7 +276,7 @@ class BaseEmissionsTracker(ABC):
             hardware = CPU.from_utils(self._output_dir, "intel_rapl")
             self._hardware.append(hardware)
             self._conf["cpu_model"] = hardware.get_model()
-        else:
+            # else:
             tdp = cpu.TDP()
             power = tdp.tdp
             model = tdp.model
@@ -571,8 +571,11 @@ class BaseEmissionsTracker(ABC):
                 self._total_cpu_energy += energy
                 self._cpu_power = power
                 logger.info(
-                    f"Energy consumed for all CPUs : {self._total_cpu_energy.kWh:.6f} kWh"
-                    + f". All CPUs Power : {self._cpu_power.W} W"
+                    f"Delta energy consumed for CPU with {hardware._mode} : {energy.kWh:.6f} kWh"
+                    + f", power : {self._cpu_power.W} W"
+                )
+                logger.info(
+                    f"Energy consumed for All CPU : {self._total_cpu_energy.kWh:.6f} kWh"
                 )
             elif isinstance(hardware, GPU):
                 self._total_gpu_energy += energy
