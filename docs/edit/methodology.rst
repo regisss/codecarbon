@@ -47,14 +47,14 @@ If we don't have the global carbon intensity or electricity of a country but we 
      - 26
    * - Nuclear
      - 29
-   * - Solar 
+   * - Solar
      - 48
    * - Wind
      - 26
-   
-sources: 
- -  `for fossil energies <https://github.com/responsibleproblemsolving/energy-usage#conversion-to-co2>`_ 
- - `for renewables energies <http://www.world-nuclear.org/uploadedFiles/org/WNA/Publications/Working_Group_Reports/comparison_of_lifecycle.pdf>`_  
+
+sources:
+ -  `for fossil energies <https://github.com/responsibleproblemsolving/energy-usage#conversion-to-co2>`_
+ - `for renewables energies <http://www.world-nuclear.org/uploadedFiles/org/WNA/Publications/Working_Group_Reports/comparison_of_lifecycle.pdf>`_
 
 
 Then if for example, in case the Energy Mix of the Grid Electricity is 25% Coal, 35% Petroleum, 26% Natural Gas and 14% Nuclear:
@@ -76,6 +76,20 @@ Power supply to the underlying hardware is tracked at frequent time intervals. T
 If none of the tracking tools are available on a computing resource, CodeCarbon will be switched to a fall back mode: It will first detect which CPU hardware is currently in use, and then map it to a data source listing 2000+ Intel and AMD CPUs and their corresponding thermal design powers (TDPs). If the CPU is not found in the data source, a global constant will be applied. CodeCarbon assumes that 50% of the TDP will be the average power consumption to make this approximation. We could not find any good resource showing statistical relationships between TDP and average power so we empirically tested that 50% is a decent approximation.
 
 The net Power Used is the net power supply consumed during the compute time, measured as ``kWh``.
+
+CPU hardware
+------------
+
+The CPU die is the processing unit itself. It’s a piece of semiconductor that has been sculpted/etched/deposited by various manufacturing processes into a net of logic blocks that do stuff that makes computing possible1. The processor package is what you get when you buy a single processor. It contains one or more dies, plastic/ceramic housing for dies and gold-plated contacts that match those on your motherboard.
+
+In Linux kernel, energy_uj is a current energy counter in micro joules. It is used to measure CPU cores’ energy consumption.
+
+Micro joules is then converted in kWh, with formulas kWh=energy * 10 ** (-6) * 2.77778e-7
+
+For example, on a laptop with Intel(R) Core(TM) i7-7600U, Code Carbon will read two files :
+/sys/class/powercap/intel-rapl/intel-rapl:1/energy_uj and /sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj
+
+
 
 
 References
