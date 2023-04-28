@@ -30,7 +30,9 @@ setuptools.setup(
     ),
     install_requires=DEPENDENCIES,
     tests_require=TEST_DEPENDENCIES,
-    extras_require={"viz": ["dash", "dash_bootstrap_components < 1.0.0", "fire"]},
+    extras_require={
+        "dev": tests_require,
+        "viz": ["dash", "dash_bootstrap_components < 1.0.0", "fire"]},
     classifiers=[
         "Natural Language :: English",
         "Programming Language :: Python :: 3.7",
