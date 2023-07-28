@@ -7,12 +7,6 @@ from datasets import load_dataset
 from transformers import pipeline
 
 
-def inference(model, data, inference_task_name):
-    print(f"Running inference {inference_task_name} on {model} {data}")
-    sleep(5)
-    return "inference_result"
-
-
 def main():
     # Arguments management
     parser = argparse.ArgumentParser()
@@ -35,6 +29,12 @@ def main():
         help="Name of a dataset of the HF Hub.",
     )
     parser.add_argument(
+        "--column_name",
+        default="text",
+        type=str,
+        help="Name of the column corresponding to input data.",
+    )
+    parser.add_argument(
         "--n_iterations",
         type=int,
         default=5,
@@ -52,7 +52,7 @@ def main():
             dataset = load_dataset(args.dataset_name, split="test")
 
         with TaskEmissionsTracker("Build model", tracker=tracker):
-            model = pipeline(model=args.model_name_or_path, task="image-classification")
+            model = pipeline(model=args.model_name_or_path, task=args.task)
 
         for i, d in enumerate(dataset[: args.n_iterations]["text"]):
             inference_task_name = "Inference" + str(i + 1)
