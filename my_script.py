@@ -40,6 +40,12 @@ def main():
         default=5,
         help="Number of inference iterations for benchmarking.",
     )
+    parser.add_argument(
+        "--device",
+        default="cpu",
+        type=str,
+        help="Device to move the model on.",
+    )
     args = parser.parse_args()
 
     try:
@@ -52,9 +58,11 @@ def main():
             dataset = load_dataset(args.dataset_name, split="test")
 
         with TaskEmissionsTracker("Build model", tracker=tracker):
-            model = pipeline(model=args.model_name_or_path, task=args.task)
+            model = pipeline(
+                model=args.model_name_or_path, task=args.task, device=args.device
+            )
 
-        for i, d in enumerate(dataset[: args.n_iterations]["text"]):
+        for i, d in enumerate(dataset[: args.n_iterations][args.column_name]):
             inference_task_name = "Inference" + str(i + 1)
             with TaskEmissionsTracker(inference_task_name, tracker=tracker):
                 model(d)
